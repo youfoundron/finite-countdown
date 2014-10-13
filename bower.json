@@ -1,0 +1,27 @@
+{
+  "name": "finite-countdown",
+  "version": "0.0.2",
+  "homepage": "https://github.com/rongierlach/finite-countdown",
+  "authors": [
+    "Ron Gierlach <rongierlach@yahoo.com>"
+  ],
+  "description": "A front-end countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone",
+  "main": "./bin/finite-countdown.js",
+  "keywords": [
+    "finite-countdown",
+    "finite",
+    "countdown",
+    "jquery",
+    "js",
+    "timezone",
+    "moment"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
