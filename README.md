@@ -4,15 +4,15 @@ A countdown plugin that reflects the true difference to the ending-time regardle
 
 ### Install
 
-'''
+```
 npm-install 'finite-countdown'
 OR
 bower-install 'finite-countdown'
-'''
+```
 
 ### Usage
 
-'''
+```
 var finiteCountdown = require('finite-countdown');
 
 // ending-time as a valid DateString
@@ -27,16 +27,16 @@ var opts = {
 
 // start and display the countdown
 finiteCountdown(end, opts);
-'''
+```
 
 ### Defaults
 
-'''
+```
 defaults =
   selector: '.countdown'
   timezone: 'America/Los_Angeles'
   format: 'hh:mm:ss'
-'''
+```
 
 ###Dependencies
 
