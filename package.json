@@ -2,7 +2,7 @@
   "name": "finite-countdown",
   "description": "A front-end countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.",
   "author": "Ron Gierlach <ron@theuprisingcreative.com> (http://youfoundron.com)",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./bin/finite-countdown.min.js",
   "dependencies": {
     "jquery": "^2.1.1",
