@@ -1,6 +1,9 @@
 {
   "name": "finite-countdown",
+  "description": "A front-end countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.",
+  "author": "Ron Gierlach <ron@theuprisingcreative.com> (http://youfoundron.com)",
   "version": "0.0.1",
+  "main": "./bin/finite-countdown.min.js",
   "dependencies": {
     "jquery": "^2.1.1",
     "moment": "^2.8.3",
@@ -15,5 +18,30 @@
     "grunt-contrib-coffee": "^0.12.0",
     "grunt-contrib-uglify": "^0.6.0",
     "load-grunt-tasks": "^0.6.0"
-  }
+  },
+  "bin": {
+    "finite-countdown": "finite-countdown.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rongierlach/finite-countdown.git"
+  },
+  "keywords": [
+    "countdown",
+    "moment",
+    "timezone",
+    "finite",
+    "js",
+    "jquery",
+    "front",
+    "end"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rongierlach/finite-countdown/issues"
+  },
+  "homepage": "https://github.com/rongierlach/finite-countdown"
 }

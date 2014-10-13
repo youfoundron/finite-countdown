@@ -1,6 +1,6 @@
 ## Finite-Countdown
 
-A countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.
+A front-end countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.
 
 ### Install
 
@@ -25,8 +25,13 @@ var opts = {
   format: "dd:hh:mm:ss"         // remaining time display format
 };                              // -- hh:mm:ss & dd:hh:mm:ss currently supported
 
-// start and display the countdown
-finiteCountdown(end, opts);
+$(function() {
+
+  // start and display the countdown
+  finiteCountdown(end, opts);
+
+});
+
 ```
 
 ### Defaults
