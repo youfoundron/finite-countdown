@@ -2,24 +2,24 @@ moment    = require('moment')
 require('moment-timezone')
 require('jquery')
 
+defaults =
+  selector: '.countdown'
+  timezone: 'America/Los_Angeles'
+  format: 'hh:mm:ss'
+  delimiter: ":"
+  show_units: false
+  remove_on_end: false
+
 has_days = ///d///i
 has_days_padded = ///dd///i
 has_hours = ///h///i
-has_hours_padded = ///dd///i
+has_hours_padded = ///hh///i
 has_minutes = ///m///i
 has_minutes_padded = ///mm///i
-has_seconds = ///m///i
-has_seconds_padded = ///mm///i
+has_seconds = ///s///i
+has_seconds_padded = ///ss///i
 
 finiteCountdown = (end, opts) ->
-  defaults =
-    selector: '.countdown'
-    timezone: 'America/Los_Angeles'
-    format: 'hh:mm:ss'
-    delimiter: ":"
-    show_units: false
-    remove_on_end: false
-
   opts = defaults unless opts
 
   selector      = opts.selector      || ".countdown"
@@ -29,15 +29,15 @@ finiteCountdown = (end, opts) ->
   show_units    = opts.show_units    || false
   remove_on_end = opts.remove_on_end || false
 
-  days_included     = format.match has_days
-  hours_included    = format.match has_hours
-  minutes_included  = format.match has_minutes
-  seconds_included  = format.match has_seconds
+  days_included     = if format.match has_days then true else false
+  hours_included    = if format.match has_hours then true else false
+  minutes_included  = if format.match has_minutes then true else false
+  seconds_included  = if format.match has_seconds then true else false
 
-  days_padded       = format.match has_days_padded
-  hours_padded      = format.match has_hours_padded
-  minutes_padded    = format.match has_minutes_padded
-  seconds_padded    = format.match has_minutes_padded
+  days_padded       = if format.match has_days_padded then true else false
+  hours_padded      = if format.match has_hours_padded then true else false
+  minutes_padded    = if format.match has_minutes_padded then true else false
+  seconds_padded    = if format.match has_minutes_padded then true else false
 
   $countdown    = $(selector)
   $delimiter    = $('<span/>').addClass('delimiter').text delimiter
@@ -47,10 +47,10 @@ finiteCountdown = (end, opts) ->
   $minutes      = $('<span/>').addClass 'minutes' if minutes_included
   $seconds      = $('<span/>').addClass 'seconds' if seconds_included
 
-  $days_unit    = $('<span/>').addClass('days-unit').text 'Days'        if days_included && show_units
-  $hours_unit   = $('<span/>').addClass('hours-unit').text 'Hours'      if hours_included && show_units
-  $minutes_unit = $('<span/>').addClass('minutes-unit').text 'Minutes'  if minutes_included && show_units
-  $seconds_unit = $('<span/>').addClass('seconds-unit').text 'Seconds'  if seconds_included && show_units
+  $days_unit    = $('<span/>').addClass('days-unit').text ' Days '        if days_included && show_units
+  $hours_unit   = $('<span/>').addClass('hours-unit').text ' Hours '      if hours_included && show_units
+  $minutes_unit = $('<span/>').addClass('minutes-unit').text ' Minutes '  if minutes_included && show_units
+  $seconds_unit = $('<span/>').addClass('seconds-unit').text ' Seconds '  if seconds_included && show_units
 
   $countdown.append($days)         if days_included
   $countdown.append($days_unit)    if days_included && show_units
@@ -61,11 +61,11 @@ finiteCountdown = (end, opts) ->
   $countdown.append($seconds)      if seconds_included
   $countdown.append($seconds_unit) if seconds_included && show_units
 
-  unless show_units
+  if show_units is false
     units = $countdown.find 'span'
-    units.pop()
-    $.each units, (unit) ->
-      $(unit).insertAfter $delimiter
+    units.splice units.length-1, 1
+    $.each units, (i, unit) ->
+      $delimiter.clone().insertAfter $(unit)
 
   counter = setInterval () ->
     dd = undefined
@@ -90,16 +90,29 @@ finiteCountdown = (end, opts) ->
       mm = "0#{mm}" if -1 < mm < 10 && minutes_padded
       remaining = remaining % 60
     # seconds
-    if seconds_included
-      ss = countSeconds remaining
-      ss = "0#{ss}" if -1 < ss < 10 && seconds_padded
+    ss = countSeconds remaining
+    ss = "0#{ss}" if -1 < ss < 10 && seconds_padded
 
     $days.html    "#{dd}" if days_included
     $hours.html   "#{hh}" if hours_included
     $minutes.html "#{mm}" if minutes_included
     $seconds.html "#{ss}" if seconds_included
 
-    if ss < 0
+    if show_units
+      if days_included
+        $days_unit.text ' Day ' if parseInt(dd) == 1
+        $days_unit.text ' Days ' if parseInt(dd) != 1 && $days_unit.text() != ' Days '
+      if hours_included
+        $hours_unit.text ' Hour ' if parseInt(hh) == 1
+        $hours_unit.text ' Hours ' if parseInt(hh) != 1 && $hours_unit.text() != ' Hours '
+      if minutes_included
+        $minutes_unit.text ' Minute ' if parseInt(mm) == 1 && show_units
+        $minutes_unit.text ' Minutes ' if parseInt(mm) != 1 && $minutes_unit.text() != ' Minutes '
+      if seconds_included
+        $seconds_unit.text ' Second ' if parseInt(ss) == 1 && show_units
+        $seconds_unit.text ' Seconds ' if parseInt(ss) != 1 && $seconds_unit.text() != ' Seconds '
+
+    if remaining < 0
       $countdown.remove() if remove_on_end
       clearInterval counter
 
