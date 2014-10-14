@@ -1,5 +1,5 @@
 (function() {
-  var countDays, countHours, countMinutes, countSeconds, finiteCountdown, getLocalDifference, getRemainingTime, has_days, has_days_padded, has_hours, has_hours_padded, has_minutes, has_minutes_padded, has_seconds, has_seconds_padded, moment;
+  var countDays, countHours, countMinutes, countSeconds, defaults, finiteCountdown, getLocalDifference, getRemainingTime, has_days, has_days_padded, has_hours, has_hours_padded, has_minutes, has_minutes_padded, has_seconds, has_seconds_padded, moment;
 
   moment = require('moment');
 
@@ -7,32 +7,33 @@
 
   require('jquery');
 
+  defaults = {
+    selector: '.countdown',
+    timezone: 'America/Los_Angeles',
+    format: 'hh:mm:ss',
+    delimiter: ":",
+    show_units: false,
+    remove_on_end: false
+  };
+
   has_days = /d/i;
 
   has_days_padded = /dd/i;
 
   has_hours = /h/i;
 
-  has_hours_padded = /dd/i;
+  has_hours_padded = /hh/i;
 
   has_minutes = /m/i;
 
   has_minutes_padded = /mm/i;
 
-  has_seconds = /m/i;
+  has_seconds = /s/i;
 
-  has_seconds_padded = /mm/i;
+  has_seconds_padded = /ss/i;
 
   finiteCountdown = function(end, opts) {
-    var $countdown, $days, $days_unit, $delimiter, $hours, $hours_unit, $minutes, $minutes_unit, $seconds, $seconds_unit, counter, days_included, days_padded, defaults, delimiter, format, hours_included, hours_padded, minutes_included, minutes_padded, remove_on_end, seconds_included, seconds_padded, selector, show_units, timezone, units;
-    defaults = {
-      selector: '.countdown',
-      timezone: 'America/Los_Angeles',
-      format: 'hh:mm:ss',
-      delimiter: ":",
-      show_units: false,
-      remove_on_end: false
-    };
+    var $countdown, $days, $days_unit, $delimiter, $hours, $hours_unit, $minutes, $minutes_unit, $seconds, $seconds_unit, counter, days_included, days_padded, delimiter, format, hours_included, hours_padded, minutes_included, minutes_padded, remove_on_end, seconds_included, seconds_padded, selector, show_units, timezone, units;
     if (!opts) {
       opts = defaults;
     }
@@ -42,14 +43,14 @@
     delimiter = opts.delimiter || ":";
     show_units = opts.show_units || false;
     remove_on_end = opts.remove_on_end || false;
-    days_included = format.match(has_days);
-    hours_included = format.match(has_hours);
-    minutes_included = format.match(has_minutes);
-    seconds_included = format.match(has_seconds);
-    days_padded = format.match(has_days_padded);
-    hours_padded = format.match(has_hours_padded);
-    minutes_padded = format.match(has_minutes_padded);
-    seconds_padded = format.match(has_minutes_padded);
+    days_included = format.match(has_days) ? true : false;
+    hours_included = format.match(has_hours) ? true : false;
+    minutes_included = format.match(has_minutes) ? true : false;
+    seconds_included = format.match(has_seconds) ? true : false;
+    days_padded = format.match(has_days_padded) ? true : false;
+    hours_padded = format.match(has_hours_padded) ? true : false;
+    minutes_padded = format.match(has_minutes_padded) ? true : false;
+    seconds_padded = format.match(has_minutes_padded) ? true : false;
     $countdown = $(selector);
     $delimiter = $('<span/>').addClass('delimiter').text(delimiter);
     if (days_included) {
@@ -65,16 +66,16 @@
       $seconds = $('<span/>').addClass('seconds');
     }
     if (days_included && show_units) {
-      $days_unit = $('<span/>').addClass('days-unit').text('Days');
+      $days_unit = $('<span/>').addClass('days-unit').text(' Days ');
     }
     if (hours_included && show_units) {
-      $hours_unit = $('<span/>').addClass('hours-unit').text('Hours');
+      $hours_unit = $('<span/>').addClass('hours-unit').text(' Hours ');
     }
     if (minutes_included && show_units) {
-      $minutes_unit = $('<span/>').addClass('minutes-unit').text('Minutes');
+      $minutes_unit = $('<span/>').addClass('minutes-unit').text(' Minutes ');
     }
     if (seconds_included && show_units) {
-      $seconds_unit = $('<span/>').addClass('seconds-unit').text('Seconds');
+      $seconds_unit = $('<span/>').addClass('seconds-unit').text(' Seconds ');
     }
     if (days_included) {
       $countdown.append($days);
@@ -100,11 +101,11 @@
     if (seconds_included && show_units) {
       $countdown.append($seconds_unit);
     }
-    if (!show_units) {
+    if (show_units === false) {
       units = $countdown.find('span');
-      units.pop();
-      $.each(units, function(unit) {
-        return $(unit).insertAfter($delimiter);
+      units.splice(units.length - 1, 1);
+      $.each(units, function(i, unit) {
+        return $delimiter.clone().insertAfter($(unit));
       });
     }
     return counter = setInterval(function() {
@@ -135,11 +136,9 @@
         }
         remaining = remaining % 60;
       }
-      if (seconds_included) {
-        ss = countSeconds(remaining);
-        if ((-1 < ss && ss < 10) && seconds_padded) {
-          ss = "0" + ss;
-        }
+      ss = countSeconds(remaining);
+      if ((-1 < ss && ss < 10) && seconds_padded) {
+        ss = "0" + ss;
       }
       if (days_included) {
         $days.html("" + dd);
@@ -153,7 +152,41 @@
       if (seconds_included) {
         $seconds.html("" + ss);
       }
-      if (ss < 0) {
+      if (show_units) {
+        if (days_included) {
+          if (parseInt(dd) === 1) {
+            $days_unit.text(' Day ');
+          }
+          if (parseInt(dd) !== 1 && $days_unit.text() !== ' Days ') {
+            $days_unit.text(' Days ');
+          }
+        }
+        if (hours_included) {
+          if (parseInt(hh) === 1) {
+            $hours_unit.text(' Hour ');
+          }
+          if (parseInt(hh) !== 1 && $hours_unit.text() !== ' Hours ') {
+            $hours_unit.text(' Hours ');
+          }
+        }
+        if (minutes_included) {
+          if (parseInt(mm) === 1 && show_units) {
+            $minutes_unit.text(' Minute ');
+          }
+          if (parseInt(mm) !== 1 && $minutes_unit.text() !== ' Minutes ') {
+            $minutes_unit.text(' Minutes ');
+          }
+        }
+        if (seconds_included) {
+          if (parseInt(ss) === 1 && show_units) {
+            $seconds_unit.text(' Second ');
+          }
+          if (parseInt(ss) !== 1 && $seconds_unit.text() !== ' Seconds ') {
+            $seconds_unit.text(' Seconds ');
+          }
+        }
+      }
+      if (remaining < 0) {
         if (remove_on_end) {
           $countdown.remove();
         }
