@@ -1,6 +1,6 @@
 {
   "name": "finite-countdown",
-  "description": "A front-end countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.",
+  "description": "A countdown plugin that reflects the difference to an ending-time regardless of a user's local timezone.",
   "author": "Ron Gierlach <ron@theuprisingcreative.com> (http://youfoundron.com)",
   "version": "0.0.2",
   "main": "./bin/finite-countdown.min.js",
@@ -20,7 +20,7 @@
     "load-grunt-tasks": "^0.6.0"
   },
   "bin": {
-    "finite-countdown": "./bin/finite-countdown.js"
+    "finite-countdown": "./bin/finite-countdown.min.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

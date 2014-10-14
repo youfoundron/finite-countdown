@@ -6,8 +6,6 @@ A front-end countdown plugin that reflects the difference to an ending-time rega
 
 ```
 npm-install "finite-countdown"
-OR
-bower-install "finite-countdown"
 ```
 
 ### Usage
@@ -21,9 +19,12 @@ var end = "2014/11/25 13:00:00";
 // additional options
 var opts = {
   timezone: "America/New_York", // timezone in context of the ending-time
-  selector: ".countdown",       // jquery selector for the countdown's parent container
-  format: "dd:hh:mm:ss"         // remaining time display format
-};                              // -- hh:mm:ss & dd:hh:mm:ss currently supported
+  selector: ".countdown",       // jquery selector for the countdown's container
+  format: "dd:hh:mm:ss",        // remaining time display format
+  delimiter: ":",               // delimiting character
+  show_units: false,            // uses unit strings instead of delimiter
+  remove_on_end: false          // removes countdown from the page upon completion
+};
 
 $(function() {
 
@@ -41,7 +42,23 @@ defaults =
   selector: ".countdown"
   timezone: "America/Los_Angeles"
   format: "hh:mm:ss"
+  delimiter: ":"
+  show_units: false
+  remove_on_end: false
 ```
+
+### Format
+
+| Unit | Token | Output |
+| ---- | ----- | ------ |
+| **Days** | d | 0 1 ... 364 365  |
+|      | dd    | 00 01 ... 364 365 |  
+| **Hours** | h | 0 1 ... 22 23 |
+|      | hh    | 00 01 ... 22 23 |
+| **Minutes** | m | 0 1 ... 58 59 |
+|      | mm    | 00 01 ... 58 59 |
+| **Seconds** | s | 0 1 ... 58 59 |
+|      | ss    | 00 01 ... 58 59 |
 
 ### Dependencies
 
