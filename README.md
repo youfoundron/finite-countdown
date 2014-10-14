@@ -22,8 +22,8 @@ var opts = {
   selector: ".countdown",       // jquery selector for the countdown's container
   format: "dd:hh:mm:ss",        // remaining time display format
   delimiter: ":",               // delimiting character
-  show_units: false,            // uses unit strings instead of delimiter
-  remove_on_end: false          // removes countdown from the page upon completion
+  show_units: false,            // use unit strings instead of delimiter
+  remove_on_end: false          // remove countdown from the page upon completion
 };
 
 $(function() {
@@ -37,6 +37,7 @@ $(function() {
 
 ### Defaults
 
+For supported Timezones see [Moment Timezone](http://momentjs.com/timezone/)
 ```
 defaults =
   selector: ".countdown"
